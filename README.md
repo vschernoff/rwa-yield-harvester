@@ -20,6 +20,8 @@ Pre-build. Discovery and issuer diligence are complete; no contracts are deploye
 no capital is live. The current artefact is the project plan.
 
 - 📄 [Project plan](./PROJECT-PLAN.md)
+- 🔬 [Research methodology](./RESEARCH-METHODOLOGY.md) — how the diligence behind the
+  plan was done. The research itself is held privately and available under NDA.
 
 ## Why this exists
 

@@ -24,6 +24,11 @@ Two distribution shapes are in scope, in this order:
 
 The embedded shape comes first because it is the one with a distribution path.
 
+**Chain scope: Solana first.** The vault, the RWA position and the monitoring agent are
+designed for Solana. Other execution environments are out of scope until the Solana
+implementation has an operating record — at which point adding one is a portability
+exercise against the same design, not a redesign.
+
 ## 2. The yield source
 
 The first asset class is **reinsurance-backed RWA**: tokens whose return originates in
@@ -177,7 +182,14 @@ action it suggests is taken by the vault's own governed logic or by a human.
 - Ship leverage as a default setting.
 - Depend on a single issuer at scale.
 
-## 6. Open questions
+## 6. Research
+
+The diligence behind this plan — issuer analyses, venue comparisons, dated on-chain
+readings and redemption-terms research — is held privately and available to
+counterparties under NDA. How it was conducted, and the standard applied, is described
+in [RESEARCH-METHODOLOGY.md](./RESEARCH-METHODOLOGY.md).
+
+## 7. Open questions
 
 1. **Share transferability** — transferable Token-2022 shares, or non-transferable
    book-entry only? Determines the compliance surface and the integration shape.
