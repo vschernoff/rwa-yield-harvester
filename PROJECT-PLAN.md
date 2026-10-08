@@ -115,6 +115,45 @@ This is architecture, not legal advice. Each institution confirms the treatment 
 own counsel against its own authorisation, and the European Commission's MiCA review —
 consultation closed 31 August 2026 — may move the line on lending.
 
+### Precedent
+
+The structure is not theoretical. Regulated European institutions have shipped
+position-based earn products, and the useful negative case is equally well documented.
+
+- **Coinbase — the negative case.** Ended USDC rewards for EEA customers effective
+  **1 December 2024**, stating that under MiCA it was required to terminate the
+  programme. Accrued rewards were paid out by 10 December. This is the clearest public
+  evidence of where the wall actually stands.
+- **Deblock (France)** — first MiCA CASP authorisation from the AMF (May 2025). Has run
+  vaults since June 2025 accepting USDC, EURC and EURCV, curated by Steakhouse
+  Financial. Deblock announced passing **$100M deposited in under a year**; the EURCV
+  vault has been reported at roughly 3.7% on about €74M. The closest precedent to this
+  project's shape: a licensed institution, its own clients, a position rather than a
+  balance.
+- **Société Générale — FORGE** — deployed its EURCV and USDCV stablecoins into onchain
+  lending markets, with vaults curated by MEV Capital, and EURCV distribution
+  integrations including Safe. A regulated bank, on the same structural pattern.
+- **Trezor Suite** — USDC and USDT yield through curated vaults (Steakhouse Financial),
+  announced May 2026. Notable as the rent-rather-than-build path, with every deposit,
+  withdrawal and claim signed on the user's own device.
+- **Bitpanda, Crypto.com, Gemini, Bitget** — all documented integrators of the same
+  lending infrastructure for onchain earn products. Bitpanda's sits in its
+  non-custodial wallet, with vaults curated by Steakhouse Financial and Gauntlet.
+
+**What the precedent does and does not establish.** It establishes that the
+position-based structure is one regulated institutions have been willing to ship, and
+that at least one MiCA-authorised CASP (Deblock) and one bank (SG-FORGE) have done so in
+production. It does **not** establish the asset class: every precedent above earns from
+**crypto lending markets**, not from real-world assets. What carries across is the
+wrapper — client parts with the token, holds a position, receives income on it — not the
+yield source. And several of these products are non-custodial by design, which is a
+different legal shape from a custodial institution placing client assets; the custodial
+precedents are the narrower set.
+
+Dates and figures above are as reported by the institutions and the infrastructure
+provider; several are company announcements rather than independently audited, and are
+recorded here as precedent rather than as benchmarks.
+
 ## 5. Phases
 
 **Phase 0 — Discovery and diligence.** *Complete.* Issuer and venue analysis, live
