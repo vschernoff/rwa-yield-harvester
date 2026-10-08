@@ -31,7 +31,13 @@ tokenised real-world assets that do pay such a return are, in practice, out of r
 reach: permissioned, KYC-gated, jurisdiction-restricted, or simply impossible to reach
 without self-custody and several chains of plumbing.
 
-This project closes that gap at the infrastructure layer, so a regulated application
+There is also a rule in the way. Under MiCA, a custodian may not pay a client any
+benefit tied to how long they hold a stablecoin — which rules out the obvious design of
+paying interest on a balance. The structure that remains open is a position: the client
+parts with the token and holds a vault position instead, and the return is income on
+that position rather than a reward for holding a balance.
+
+This project closes both gaps at the infrastructure layer, so a regulated application
 can present real-world yield as one more line in a product its users already understand.
 
 ## Principles

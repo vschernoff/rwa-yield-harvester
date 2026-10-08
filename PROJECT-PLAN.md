@@ -49,7 +49,73 @@ Two categories were evaluated and explicitly ruled out:
   unsecured credit risk against an operator, usually without an audited loan book.
   Structurally the same shape as the 2022 failures.
 
-## 3. Phases
+## 3. Holder of record
+
+In the embedded shape, **the integrating institution is the holder of record.** The
+vault position sits in that institution's own custody, under its own keys, inside the
+safeguarding arrangements it already operates. End users hold book-entry claims against
+their provider — exactly as they do for every other asset in the application.
+
+The vault is execution and accounting infrastructure. It takes custody of nothing, holds
+no keys, and does not become a counterparty to the end user.
+
+Three consequences follow:
+
+- **No new custodian enters the picture.** This is the property that makes the structure
+  reviewable: the institution's existing custody, segregation and reconciliation
+  controls continue to apply unchanged, and no client asset moves outside them.
+- **Eligibility is assessed at institution level.** Where the underlying RWA is
+  permissioned — restricted to eligible holders in permitted jurisdictions, subject to
+  KYC at the token level — the eligible holder is the institution. Its users reach the
+  asset through their provider's book entry, not by qualifying individually.
+- **The chain is invisible to the end user, but not to the institution.** Whoever is
+  holder of record must be able to custody the position on the chain where it lives,
+  directly or through a sub-custodian. For a Solana-first implementation that is a
+  concrete integration requirement, and it is the reason a partner's chain coverage
+  still matters even though its users never see a network.
+
+Withdrawals resolve behind that boundary. The user takes one action; the vault meets it
+from its liquidity buffer, from the secondary market, or through the issuer's redemption
+process, depending on size and conditions. §6(c) describes the conditions the monitoring
+agent watches in order to keep that promise honest.
+
+## 4. Regulatory basis (EU)
+
+This product exists because of a specific rule, and a specific gap that rule leaves open.
+
+**The wall.** MiCA **Article 50** prohibits granting any remuneration or benefit tied to
+the length of time an **e-money token** is held — and extends the prohibition to benefits
+provided through third parties, so it cannot be subcontracted away. **Article 40** does
+the same for asset-referenced tokens. The practical effect is that **a custodian cannot
+pay yield on a stablecoin balance it holds for a client.** Coinbase switched off USDC
+rewards for EEA clients on 1 December 2024 for exactly this reason.
+
+**The gap.** The prohibition attaches to *holding*. Where the client parts with the token
+and receives a position in return, the return is income on an asset placed — not a
+benefit for one held. The test counsel applies is a single question:
+
+> *Would the client receive this benefit by simply keeping the balance?*
+
+If the answer is no, the structure sits outside the prohibition. This is the mechanism by
+which a regulated institution can offer its clients a return on stablecoin balances at
+all, and it is the reason the product is built as a vault position rather than as an
+interest-bearing account.
+
+**What that requires of the design.** Three constraints, architectural rather than
+procedural:
+
+- Subscription is an **exchange**, not an accrual. The client's stablecoin is exchanged
+  for a vault position.
+- Reporting shows **a position and its income**, never a balance earning interest.
+  Statement wording is part of the architecture, not a copywriting decision.
+- Valuation is taken from the vault's own share price, read from chain on a daily
+  snapshot. No external valuation provider sits in the loop for the vault layer.
+
+This is architecture, not legal advice. Each institution confirms the treatment with its
+own counsel against its own authorisation, and the European Commission's MiCA review —
+consultation closed 31 August 2026 — may move the line on lending.
+
+## 5. Phases
 
 **Phase 0 — Discovery and diligence.** *Complete.* Issuer and venue analysis, live
 on-chain verification of yields, borrow rates, collateral parameters and exit depth,
@@ -60,7 +126,7 @@ which wrappers a regulated distributor can actually hold.
 single RWA position. Risk parameters and caps enforced in the program. Governance of
 those parameters held by a multisig. Third-party audit before any live capital.
 
-**Phase 2 — Monitoring agent.** The checks in §4(c), running continuously against
+**Phase 2 — Monitoring agent.** The checks in §6(c), running continuously against
 public chain state, with alerting into a partner's own notification channel. Read-only
 by construction.
 
@@ -74,7 +140,7 @@ expanded. Adding a second RWA source is a precondition for scale, not an enhance
 Each phase gates the next. Leverage-bearing strategies, if they ship at all, come after
 the unlevered product has an operating record.
 
-## 4. What the architecture will be based on
+## 6. What the architecture will be based on
 
 ### (a) Token format
 
@@ -174,7 +240,7 @@ on chain before they become visible to a user.
 keys, signs nothing, moves no funds, and gives no personalised recommendation. Any
 action it suggests is taken by the vault's own governed logic or by a human.
 
-## 5. What this project will not do
+## 7. What this project will not do
 
 - Pay a return on a token that is itself a stablecoin, where doing so would conflict
   with the rules governing that instrument.
@@ -182,20 +248,22 @@ action it suggests is taken by the vault's own governed logic or by a human.
 - Ship leverage as a default setting.
 - Depend on a single issuer at scale.
 
-## 6. Research
+## 8. Research
 
 The diligence behind this plan — issuer analyses, venue comparisons, dated on-chain
 readings and redemption-terms research — is held privately and available to
 counterparties under NDA. How it was conducted, and the standard applied, is described
 in [RESEARCH-METHODOLOGY.md](./RESEARCH-METHODOLOGY.md).
 
-## 7. Open questions
+## 9. Open questions
 
-1. **Share transferability** — transferable Token-2022 shares, or non-transferable
-   book-entry only? Determines the compliance surface and the integration shape.
-2. **Holder of record** — does an integrating application custody the RWA position
-   itself, or hold a claim on the vault? This is as much a safeguarding question as a
-   technical one, and it determines which chain even matters to a partner.
+1. **Share transferability** — the embedded shape settles the user-facing side: end
+   users hold book entries, not tokens. What remains open is whether shares held by an
+   institution should be transferable between eligible holders at all, or deliberately
+   non-transferable to keep the compliance surface minimal.
+2. **Chain coverage at the partner** — a holder of record must custody the position on
+   the chain it lives on. Which institutions can do that for Solana directly, and where
+   a sub-custodian is the realistic answer.
 3. **Issuer eligibility** — the permitted-jurisdiction and KYC constraints attached to
    each candidate RWA token, and whether a vault entity can be the holder of record on
    behalf of downstream users.
